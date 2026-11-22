@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checklist Pós-Drenagem | V3 TESTES</title>
+  <style>
+    :root{--navy:#10243a;--navy2:#183550;--blue:#2463eb;--bg:#f3f6fa;--card:#fff;--ink:#172b43;--muted:#6a7b8d;--line:#e1e8f0;--good:#16835d;--bad:#bd3e3e;--radius:17px}
+    *{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink)}button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.55}.shell{display:grid;grid-template-columns:244px 1fr;min-height:100vh}.side{background:var(--navy);color:#dce9f5;padding:25px 16px;display:flex;flex-direction:column;gap:25px}.brand{display:flex;align-items:center;gap:12px;padding:4px 8px}.brand-icon{background:#3676ff;border-radius:12px;width:40px;height:40px;display:grid;place-items:center;font-size:24px}.brand strong{display:block;color:white;font-size:16px}.brand small{font-size:11px;color:#a8bdd0}.nav{display:grid;gap:6px}.nav button{border:0;background:transparent;color:#c5d7e8;text-align:left;border-radius:10px;padding:13px 14px;font-size:14px}.nav button.active,.nav button:hover{background:#294664;color:white}.nav button span{display:inline-block;width:27px}.side-note{margin-top:auto;font-size:12px;color:#adc1d4;line-height:1.6;padding:10px}.main{padding:30px;max-width:1400px;width:100%;margin:auto}.top{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:24px}.top h1{font-size:27px;margin:0 0 7px}.subtitle{margin:0;color:var(--muted);font-size:14px}.pill{border:1px solid #f1d19a;color:#8b5c11;background:#fff7e8;padding:9px 12px;border-radius:30px;font-weight:700;font-size:12px;white-space:nowrap}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:22px}.metric,.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 5px 20px rgba(16,36,58,.035)}.metric{padding:19px}.metric small{color:var(--muted)}.metric strong{display:block;font-size:28px;margin:11px 0 5px}.metric em{font-style:normal;font-size:12px;color:var(--muted)}.layout{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(260px,1fr);gap:18px}.panel{padding:23px}.panel h2{font-size:18px;margin:0 0 6px}.panel .desc{font-size:13px;color:var(--muted);margin:0 0 21px;line-height:1.5}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{display:grid;gap:7px;font-size:13px;font-weight:600}.field input,.field textarea{width:100%;border:1px solid #d6e0ea;border-radius:10px;padding:12px 13px;background:white;color:var(--ink);outline:none}.field input:focus,.field textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px #2463eb18}.full{grid-column:1/-1}.section-head{display:flex;justify-content:space-between;align-items:center;margin:25px 0 10px;gap:10px}.section-head strong{font-size:14px}.section-head small{font-size:12px;color:var(--muted)}.item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-top:1px solid var(--line)}.item-name{font-size:13px;font-weight:600}.choices{display:flex;gap:7px;flex-shrink:0}.choice{border:1px solid #dce4ed;background:white;border-radius:8px;padding:8px 10px;font-size:12px;color:#526477}.choice.on.good{border-color:#8dd8bc;background:#e8f8f1;color:#08714c}.choice.on.bad{border-color:#f0b1b1;background:#fff0f0;color:#a52d2d}.actions{display:flex;gap:10px;margin-top:19px;flex-wrap:wrap}.primary,.secondary{border-radius:10px;padding:12px 17px;font-weight:700;border:0}.primary{background:var(--blue);color:white}.secondary{background:#edf2f8;color:var(--navy2)}.info{background:#eef5ff;border:1px solid #d5e5ff;color:#2b557d;border-radius:12px;padding:14px;font-size:13px;line-height:1.55}.status{margin-top:15px;border-radius:11px;padding:13px;font-size:13px;line-height:1.5;white-space:pre-wrap}.status.ok{background:#e8f8f1;color:#08714c}.status.error{background:#fff0f0;color:#9d2c2c}.status.neutral{background:#f0f4f9;color:#41556b}.sidepanel{display:grid;align-content:start;gap:18px}.steps{display:grid;gap:13px;margin-top:16px}.step{display:flex;gap:11px;align-items:flex-start;font-size:13px;color:#42566c}.dot{width:25px;height:25px;display:grid;place-items:center;background:#eaf0f7;border-radius:50%;font-weight:700;flex-shrink:0}.hidden{display:none!important}.tabview{display:none}.tabview.active{display:block}.empty{padding:20px;border:1px dashed #c9d5e3;border-radius:12px;color:var(--muted);font-size:13px}.table-wrap{overflow:auto}table{border-collapse:collapse;width:100%;font-size:13px}th,td{padding:11px;border-bottom:1px solid var(--line);text-align:left}th{color:var(--muted);font-weight:600}.footer{font-size:11px;color:var(--muted);margin-top:20px}.loading{opacity:.65;pointer-events:none}
+    .item.issue{background:#fff4f4;border-radius:10px;padding:12px;margin:3px 0;border:1px solid #f1bcbc}.confirm-box{display:flex;align-items:flex-start;gap:10px;margin-top:16px;padding:14px;border:1px solid var(--line);border-radius:11px;background:#f8fafc;font-size:13px;line-height:1.5}.confirm-box input{width:18px;height:18px;flex-shrink:0;accent-color:var(--blue)}.recheck-card{padding:15px;border:1px solid var(--line);border-radius:12px;margin-top:12px}.recheck-card .choices{margin-top:10px}.recheck-card .choice{min-width:130px}.recheck-card.issue{border-color:#f0b1b1;background:#fff8f8}
+    @media(max-width:1000px){.cards{grid-template-columns:repeat(2,1fr)}.layout{grid-template-columns:1fr}.shell{grid-template-columns:1fr}.side{padding:14px;gap:12px}.brand{padding:0}.nav{display:flex;overflow:auto}.nav button{white-space:nowrap}.side-note{display:none}.main{padding:19px}}@media(max-width:600px){.top{align-items:flex-start;flex-direction:column}.top h1{font-size:23px}.cards{gap:9px}.metric{padding:14px}.metric strong{font-size:23px}.panel{padding:17px}.formgrid{grid-template-columns:1fr}.item{align-items:flex-start;flex-direction:column}.choices{width:100%}.choice{flex:1}.actions button{flex:1}}
+  </style>
+</head>
+<body>
+<div class="shell">
+  <aside class="side">
+    <div class="brand"><div class="brand-icon">🚂</div><div><strong>Checklist V3</strong><small>Pós-Drenagem · TESTES</small></div></div>
+    <nav class="nav" aria-label="Navegação principal">
+      <button class="active" data-tab="inicio"><span>▦</span> Visão geral</button>
+      <button data-tab="checklist"><span>☑</span> Novo checklist</button>
+      <button data-tab="pendencias"><span>⚠</span> Pendências</button>
+      <button data-tab="reinspecao"><span>↻</span> Reinspeção</button>
+      <button data-tab="movimentacoes"><span>⇄</span> Movimentações</button>
+       <button data-tab="gerencial"><span>▤</span> Dashboard gerencial</button>
+    </nav>
+    <div class="side-note">AMBIENTE DE TESTES<br>Publicação em homologação.<br>Nenhuma movimentação é autorizada.</div>
+  </aside>
+  <main class="main">
+    <div class="top"><div><h1 id="pageTitle">Visão geral</h1><p class="subtitle">Controle de inspeções e pendências de locomotivas</p></div><div class="pill">● V3 · HOMOLOGAÇÃO</div></div>
+    <section id="inicio" class="tabview active">
+      <div class="cards">
+        <div class="metric"><small>Checklists consultados</small><strong id="mTotal">—</strong><em>Histórico da V3</em></div>
+        <div class="metric"><small>Conformes</small><strong id="mConforme">—</strong><em>Status do histórico</em></div>
+        <div class="metric"><small>Com pendência</small><strong id="mPendencia">—</strong><em>Status do histórico</em></div>
+        <div class="metric"><small>Integração com API</small><strong>Pendente</strong><em>Conexão ainda não configurada</em></div>
+      </div>
+      <div class="layout"><div class="panel"><h2>Últimos checklists</h2><p class="desc">Consulta da aba Checklist da planilha V3 TESTES.</p><div id="historicoMsg" class="empty">Histórico indisponível: integração com o Apps Script pendente.</div><div id="historicoTabela" class="table-wrap hidden"><table><thead><tr><th>Locomotiva</th><th>Data/hora</th><th>Colaborador</th><th>Status</th></tr></thead><tbody id="historicoBody"></tbody></table></div></div><div class="sidepanel"><div class="panel"><h2>Comece uma inspeção</h2><p class="desc">Avalie os itens do banheiro e registre uma inspeção real no ambiente piloto.</p><button class="primary" data-go="checklist">Preencher checklist</button></div><div class="info"><strong>🔒 Ambiente protegido</strong><br>A gravação será habilitada após a homologação da integração com o servidor.</div></div></div>
+    </section>
+    <section id="checklist" class="tabview"><div class="layout"><div class="panel"><h2>Novo checklist</h2><p class="desc">Piloto V3: registre somente inspeções físicas realmente realizadas. A gravação será disponibilizada após a homologação da integração.</p><div class="formgrid"><label class="field">Locomotiva (4 dígitos)<input id="loco" inputmode="numeric" maxlength="4" placeholder="Ex.: 1250" autocomplete="off"></label><label class="field">Colaborador<input id="colaborador" maxlength="100" placeholder="Nome completo" autocomplete="off"></label></div><div id="duplicidadeAviso" class="status neutral" role="status" aria-live="polite">Informe os 4 dígitos da locomotiva para consultar o intervalo de 8 horas.</div><div class="section-head"><strong>Itens da inspeção</strong><small id="progress">0 de 10 avaliados</small></div><div id="items"></div><label class="field" style="margin-top:18px">Observações (obrigatórias se houver pendência)<textarea id="observacao" rows="3" maxlength="1000" placeholder="Descreva qualquer anormalidade identificada"></textarea></label><label class="confirm-box"><input type="checkbox" id="vistoriaConfirmada"><span>Confirmo que realizei fisicamente esta inspeção e que os dados informados são verdadeiros. O registro piloto não autoriza circulação ou liberação operacional.</span></label><div class="actions"><button class="primary" id="preview">Salvar checklist</button><button class="secondary" id="reset">Limpar formulário</button></div><div id="previewResult" aria-live="polite"></div></div><div class="sidepanel"><div class="panel"><h2>Como preencher</h2><div class="steps"><div class="step"><div class="dot">1</div><div>Informe a locomotiva e o colaborador.</div></div><div class="step"><div class="dot">2</div><div>Avalie os dez itens após a ativação da integração.</div></div><div class="step"><div class="dot">3</div><div>Confirme a inspeção física e salve o registro piloto.</div></div></div></div><div class="info"><strong>Importante</strong><br>O salvamento exige autorização do servidor e grava apenas na planilha V3 TESTES. Não constitui liberação operacional.</div></div></div></section>
+    <section id="pendencias" class="tabview"><div class="panel"><h2>Consulta de pendências</h2><p class="desc">Consulta de anomalias após a integração com o servidor.</p><div class="formgrid"><label class="field">Locomotiva<input id="locoPend" maxlength="4" inputmode="numeric" placeholder="Ex.: 1250"></label><div class="field" style="align-self:end"><button class="primary" id="buscarPend">Consultar</button></div></div><div id="pendResult" style="margin-top:20px" class="empty">Informe a locomotiva para consultar.</div></div></section>
+    <section id="reinspecao" class="tabview"><div class="layout"><div class="panel"><h2>Reinspeção de pendências</h2><p class="desc">A consulta e o registro de reinspeções serão habilitados após a integração segura. A reinspeção será habilitada após a integração segura.</p><div class="formgrid"><label class="field">Locomotiva (4 dígitos)<input id="locoRe" maxlength="4" inputmode="numeric" placeholder="Ex.: 1250"></label><div class="field" style="align-self:end"><button class="primary" id="buscarRe">Consultar pendências</button></div></div><div id="reMsg" class="status neutral">Informe a locomotiva para consultar.</div><div id="reForm" class="hidden"><label class="field" style="margin-top:15px">Colaborador<input id="colaboradorRe" maxlength="100" placeholder="Nome completo"></label><div id="reItems"></div><label class="field" style="margin-top:15px">Observação da reinspeção<textarea id="observacaoRe" rows="3" maxlength="1000" placeholder="Descreva o resultado da verificação"></textarea></label><label class="confirm-box"><input type="checkbox" id="reConfirmada"><span>Confirmo que realizei fisicamente a reinspeção. O registro não autoriza circulação.</span></label><div class="actions"><button class="primary" id="previewRe">Registrar reinspeção</button></div><div id="reResult" aria-live="polite"></div></div></div><div class="sidepanel"><div class="info"><strong>🔒 Reinspeção em testes</strong><br>Nenhum item é regularizado ou gravado nesta publicação inicial. A ausência de pendências na V3 não comprova liberação operacional.</div></div></div></section>
+    <section id="movimentacoes" class="tabview">
+      <div class="panel">
+        <h2>Painel de Movimentações — V3 TESTES</h2>
+        <p class="desc">Consulta informativa da planilha V3. Registros de teste não são saídas ferroviárias.</p>
+        <div class="info"><strong>🔒 Somente leitura</strong><br>Nenhuma ação neste painel confirma ou autoriza movimentações. O status CONFIRMADA é apenas uma declaração registrada, não uma verificação física de saída. A ausência de pendências não constitui liberação operacional.</div>
+        <div class="actions"><button class="primary" id="refreshMov">Atualizar indicadores</button></div>
+        <div id="movResult" class="status neutral" role="status" aria-live="polite">Integração pendente. Nenhum indicador foi carregado.</div>
+        <div id="movDashboard" class="hidden" style="margin-top:20px">
+          <div class="cards" style="margin-bottom:20px">
+            <div class="metric"><small>Total de registros</small><strong id="movTotal">—</strong><em>Inclui testes</em></div>
+            <div class="metric"><small>Simulações</small><strong id="movSim">—</strong><em>Excluídas do histórico operacional</em></div>
+            <div class="metric"><small>Declaradas confirmadas</small><strong id="movConf">—</strong><em>Origem operacional</em></div>
+            <div class="metric"><small>Comandadas com pendência</small><strong id="movPend">—</strong><em>Registros declarados</em></div>
+          </div>
+          <div class="cards" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+            <div class="metric"><small>Previstas</small><strong id="movPrev">—</strong></div>
+            <div class="metric"><small>Canceladas</small><strong id="movCanc">—</strong></div>
+            <div class="metric"><small>Registros inválidos</small><strong id="movInv">—</strong></div>
+          </div>
+          <div class="panel hidden" style="box-shadow:none;margin-bottom:16px">
+            <h2>Histórico demonstrativo</h2><p class="desc">Registros fictícios de homologação, nunca contabilizados como saídas confirmadas.</p>
+            <div id="movDemoEmpty" class="empty">Nenhuma simulação retornada.</div>
+            <div id="movDemoWrap" class="table-wrap hidden"><table><thead><tr><th>Locomotiva</th><th>Condição</th><th>Status</th><th>Origem</th></tr></thead><tbody id="movDemoBody"></tbody></table></div>
+          </div>
+          <div class="panel" style="box-shadow:none">
+            <h2>Histórico operacional declarado</h2><p class="desc">Somente registros de origem OPERACIONAL e status CONFIRMADA, quando existentes. Não comprova saída física.</p>
+            <div id="movOpEmpty" class="empty">Nenhum registro operacional confirmado retornado.</div>
+            <div id="movOpWrap" class="table-wrap hidden"><table><thead><tr><th>Locomotiva</th><th>Data da saída declarada</th><th>Condição</th><th>Restrição</th><th>Pendências registradas</th></tr></thead><tbody id="movOpBody"></tbody></table></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="gerencial" class="tabview">
+      <div class="panel">
+        <div class="section-head" style="margin:0 0 14px"><div><h2>Dashboard gerencial</h2><p class="desc">Indicadores de anomalias, reinspeções e movimentações. Fontes: abas da V3 TESTES.</p></div></div>
+        <div class="info"><strong>🔒 Ambiente V3 TESTES — somente leitura.</strong> Nenhum resultado autoriza circulação, comprova liberação ou altera pendências.</div>
+        <div class="actions" role="group" aria-label="Modo do dashboard">
+          <button type="button" class="primary" id="gerOp">Visão operacional</button>
+          
+          <button type="button" class="secondary" id="gerAtualizar">Atualizar</button>
+          <button type="button" class="secondary" id="gerImprimir" disabled>Imprimir relatório</button>
+        </div>
+        <div class="formgrid" style="margin-top:15px;max-width:570px"><label class="field">Consultar locomotiva (4 dígitos)<input id="gerLoco" maxlength="4" inputmode="numeric" value="1250" placeholder="Ex.: 1250"></label><div class="field" style="align-self:end"><button type="button" class="primary" id="gerBuscarLoco">Consultar locomotiva</button></div></div>
+        <div id="gerStatus" class="status neutral" role="status" aria-live="polite">Integração pendente. Nenhum indicador foi carregado.</div>
+        <div id="gerConteudo" class="hidden">
+          <h2 id="gerTitulo" style="margin:24px 0 14px">Indicadores</h2>
+          <div class="cards" id="gerCards"></div>
+          <div class="layout">
+            <div class="panel"><h2>Anomalias da locomotiva <span id="gerLocoAn">1250</span></h2><p class="desc" id="gerDescricao">Histórico da consulta.</p><div class="table-wrap"><table><thead><tr><th>Item</th><th>Status</th><th>Abertura</th><th>Encerramento</th><th>Tempo (h)</th></tr></thead><tbody id="gerAnomalias"></tbody></table></div></div>
+            <div class="panel"><h2>Reinspeções — <span id="gerLocoRe">1250</span></h2><p class="desc">Cada tentativa permanece registrada no histórico de testes.</p><div class="table-wrap"><table><thead><tr><th>Item</th><th>Resultado</th><th>Data</th></tr></thead><tbody id="gerReinspecoes"></tbody></table></div></div>
+          </div>
+          <div class="panel" style="margin-top:18px"><h2>Movimentações — <span id="gerLocoMov">1250</span></h2><p class="desc">Histórico informativo, quando disponível. Não comprova circulação.</p><div class="table-wrap"><table><thead><tr><th>Data</th><th>Condição</th><th>Restrição</th><th>Status</th></tr></thead><tbody id="gerMovimentacoes"></tbody></table></div></div>
+          <p class="footer" id="gerAviso"></p>
+        </div>
+      </div>
+    </section>
+    <div class="footer">Checklist Pós-Drenagem V3 · Homologação GitHub Pages · Integração com servidor pendente · Sem gravação</div>
+  </main>
+</div>
+<script>
+(function () {
+  'use strict';
+  const labels = {inicio:'Visão geral',checklist:'Novo checklist',pendencias:'Pendências',reinspecao:'Reinspeção',movimentacoes:'Movimentações',gerencial:'Dashboard gerencial'};
+  const $ = id => document.getElementById(id);
+  function show(tab) {
+    document.querySelectorAll('.tabview').forEach(el => el.classList.toggle('active',el.id===tab));
+    document.querySelectorAll('[data-tab]').forEach(el => el.classList.toggle('active',el.dataset.tab===tab));
+    $('pageTitle').textContent=labels[tab]||'Checklist V3';
+  }
+  document.querySelectorAll('[data-tab]').forEach(el=>el.addEventListener('click',()=>show(el.dataset.tab)));
+  document.querySelectorAll('[data-go]').forEach(el=>el.addEventListener('click',()=>show(el.dataset.go)));
+  // Esta publicação é uma estrutura estática. Não simula consultas nem gravações.
+  document.querySelectorAll('input,textarea,select').forEach(el=>el.disabled=true);
+  document.querySelectorAll('button:not([data-tab]):not([data-go])').forEach(el=>el.disabled=true);
+  const msg='Integração com Google Apps Script ainda não configurada. Nenhuma consulta ou gravação foi executada.';
+  ['duplicidadeAviso','pendResult','reMsg','movResult','gerStatus'].forEach(id=>{if($(id)){$(id).textContent=msg;$(id).className='status neutral';}});
+  const historico=$('historicoMsg');if(historico)historico.textContent=msg;
+  const itens=[['Banheiro limpo'],['Banheiro drenado'],['Descarga funcionando'],['Água disponível'],['Sabonete líquido'],['Papel higiênico'],['Papel-toalha'],['Iluminação'],['Porta funcionando'],['Cabine limpa']];
+  $('items').innerHTML=itens.map(([nome])=>'<div class="item"><div class="item-name">'+nome+'</div><div class="choices"><button type="button" class="choice" disabled>✓ Conforme</button><button type="button" class="choice" disabled>✕ Não conforme</button></div></div>').join('');
+  $('progress').textContent='Integração pendente';
+  const info=document.createElement('div');info.className='status neutral';info.textContent='Página de homologação. Os formulários serão habilitados somente após a conexão segura com o Apps Script e a validação do gravador.';
+  $('checklist').querySelector('.panel').prepend(info);
+})();
+</script>
+</body>
+</html>
+
