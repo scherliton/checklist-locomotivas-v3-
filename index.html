@@ -33,9 +33,9 @@
         <div class="metric"><small>Checklists consultados</small><strong id="mTotal">—</strong><em>Histórico da V3</em></div>
         <div class="metric"><small>Conformes</small><strong id="mConforme">—</strong><em>Status do histórico</em></div>
         <div class="metric"><small>Com pendência</small><strong id="mPendencia">—</strong><em>Status do histórico</em></div>
-        <div class="metric"><small>Integração com API</small><strong>Pendente</strong><em>Conexão ainda não configurada</em></div>
+        <div class="metric"><small>Integração com API</small><strong id="mApi">Consultando…</strong><em id="mApiDesc">Conexão somente leitura</em></div>
       </div>
-      <div class="layout"><div class="panel"><h2>Últimos checklists</h2><p class="desc">Consulta da aba Checklist da planilha V3 TESTES.</p><div id="historicoMsg" class="empty">Histórico indisponível: integração com o Apps Script pendente.</div><div id="historicoTabela" class="table-wrap hidden"><table><thead><tr><th>Locomotiva</th><th>Data/hora</th><th>Colaborador</th><th>Status</th></tr></thead><tbody id="historicoBody"></tbody></table></div></div><div class="sidepanel"><div class="panel"><h2>Comece uma inspeção</h2><p class="desc">Avalie os itens do banheiro e registre uma inspeção real no ambiente piloto.</p><button class="primary" data-go="checklist">Preencher checklist</button></div><div class="info"><strong>🔒 Ambiente protegido</strong><br>A gravação será habilitada após a homologação da integração com o servidor.</div></div></div>
+      <div class="layout"><div class="panel"><h2>Últimos checklists</h2><p class="desc">Consulta da aba Checklist da planilha V3 TESTES.</p><div id="historicoMsg" class="empty">Histórico indisponível: integração com o Apps Script pendente.</div><div id="historicoTabela" class="table-wrap hidden"><table><thead><tr><th>Locomotiva</th><th>Data/hora</th><th>Status</th></tr></thead><tbody id="historicoBody"></tbody></table></div></div><div class="sidepanel"><div class="panel"><h2>Comece uma inspeção</h2><p class="desc">Avalie os itens do banheiro e registre uma inspeção real no ambiente piloto.</p><button class="primary" data-go="checklist">Preencher checklist</button></div><div class="info"><strong>🔒 Ambiente protegido</strong><br>A gravação será habilitada após a homologação da integração com o servidor.</div></div></div>
     </section>
     <section id="checklist" class="tabview"><div class="layout"><div class="panel"><h2>Novo checklist</h2><p class="desc">Piloto V3: registre somente inspeções físicas realmente realizadas. A gravação será disponibilizada após a homologação da integração.</p><div class="formgrid"><label class="field">Locomotiva (4 dígitos)<input id="loco" inputmode="numeric" maxlength="4" placeholder="Ex.: 1250" autocomplete="off"></label><label class="field">Colaborador<input id="colaborador" maxlength="100" placeholder="Nome completo" autocomplete="off"></label></div><div id="duplicidadeAviso" class="status neutral" role="status" aria-live="polite">Informe os 4 dígitos da locomotiva para consultar o intervalo de 8 horas.</div><div class="section-head"><strong>Itens da inspeção</strong><small id="progress">0 de 10 avaliados</small></div><div id="items"></div><label class="field" style="margin-top:18px">Observações (obrigatórias se houver pendência)<textarea id="observacao" rows="3" maxlength="1000" placeholder="Descreva qualquer anormalidade identificada"></textarea></label><label class="confirm-box"><input type="checkbox" id="vistoriaConfirmada"><span>Confirmo que realizei fisicamente esta inspeção e que os dados informados são verdadeiros. O registro piloto não autoriza circulação ou liberação operacional.</span></label><div class="actions"><button class="primary" id="preview">Salvar checklist</button><button class="secondary" id="reset">Limpar formulário</button></div><div id="previewResult" aria-live="polite"></div></div><div class="sidepanel"><div class="panel"><h2>Como preencher</h2><div class="steps"><div class="step"><div class="dot">1</div><div>Informe a locomotiva e o colaborador.</div></div><div class="step"><div class="dot">2</div><div>Avalie os dez itens após a ativação da integração.</div></div><div class="step"><div class="dot">3</div><div>Confirme a inspeção física e salve o registro piloto.</div></div></div></div><div class="info"><strong>Importante</strong><br>O salvamento exige autorização do servidor e grava apenas na planilha V3 TESTES. Não constitui liberação operacional.</div></div></div></section>
     <section id="pendencias" class="tabview"><div class="panel"><h2>Consulta de pendências</h2><p class="desc">Consulta de anomalias após a integração com o servidor.</p><div class="formgrid"><label class="field">Locomotiva<input id="locoPend" maxlength="4" inputmode="numeric" placeholder="Ex.: 1250"></label><div class="field" style="align-self:end"><button class="primary" id="buscarPend">Consultar</button></div></div><div id="pendResult" style="margin-top:20px" class="empty">Informe a locomotiva para consultar.</div></div></section>
@@ -96,34 +96,108 @@
         </div>
       </div>
     </section>
-    <div class="footer">Checklist Pós-Drenagem V3 · Homologação GitHub Pages · Integração com servidor pendente · Sem gravação</div>
+    <div class="footer">Checklist Pós-Drenagem V3 · Homologação GitHub Pages · Consulta do histórico V3 TESTES · Sem gravação</div>
   </main>
 </div>
 <script>
 (function () {
   'use strict';
+  const API = 'https://script.google.com/macros/s/AKfycbxGW9u8bojENcFtY4fTm1MooVBg62WYs_iftnJwsUF9IxGHsNCSynJXfugu1aaJeIGoww/exec';
   const labels = {inicio:'Visão geral',checklist:'Novo checklist',pendencias:'Pendências',reinspecao:'Reinspeção',movimentacoes:'Movimentações',gerencial:'Dashboard gerencial'};
   const $ = id => document.getElementById(id);
+  const number = n => Number(n).toLocaleString('pt-BR');
   function show(tab) {
     document.querySelectorAll('.tabview').forEach(el => el.classList.toggle('active',el.id===tab));
     document.querySelectorAll('[data-tab]').forEach(el => el.classList.toggle('active',el.dataset.tab===tab));
-    $('pageTitle').textContent=labels[tab]||'Checklist V3';
+    $('pageTitle').textContent = labels[tab] || 'Checklist V3';
   }
   document.querySelectorAll('[data-tab]').forEach(el=>el.addEventListener('click',()=>show(el.dataset.tab)));
   document.querySelectorAll('[data-go]').forEach(el=>el.addEventListener('click',()=>show(el.dataset.go)));
-  // Esta publicação é uma estrutura estática. Não simula consultas nem gravações.
+
+  // A publicação GitHub Pages é somente leitura. Nenhuma gravação é habilitada.
   document.querySelectorAll('input,textarea,select').forEach(el=>el.disabled=true);
   document.querySelectorAll('button:not([data-tab]):not([data-go])').forEach(el=>el.disabled=true);
-  const msg='Integração com Google Apps Script ainda não configurada. Nenhuma consulta ou gravação foi executada.';
-  ['duplicidadeAviso','pendResult','reMsg','movResult','gerStatus'].forEach(id=>{if($(id)){$(id).textContent=msg;$(id).className='status neutral';}});
-  const historico=$('historicoMsg');if(historico)historico.textContent=msg;
-  const itens=[['Banheiro limpo'],['Banheiro drenado'],['Descarga funcionando'],['Água disponível'],['Sabonete líquido'],['Papel higiênico'],['Papel-toalha'],['Iluminação'],['Porta funcionando'],['Cabine limpa']];
-  $('items').innerHTML=itens.map(([nome])=>'<div class="item"><div class="item-name">'+nome+'</div><div class="choices"><button type="button" class="choice" disabled>✓ Conforme</button><button type="button" class="choice" disabled>✕ Não conforme</button></div></div>').join('');
-  $('progress').textContent='Integração pendente';
-  const info=document.createElement('div');info.className='status neutral';info.textContent='Página de homologação. Os formulários serão habilitados somente após a conexão segura com o Apps Script e a validação do gravador.';
+  const msg='Funcionalidade ainda não integrada à API V3 TESTES. Nenhuma gravação foi realizada.';
+  ['duplicidadeAviso','pendResult','reMsg','movResult','gerStatus'].forEach(id=>{
+    if($(id)) {$(id).textContent=msg;$(id).className='status neutral';}
+  });
+  const itens=['Banheiro limpo','Banheiro drenado','Descarga funcionando','Água disponível','Sabonete líquido','Papel higiênico','Papel-toalha','Iluminação','Porta funcionando','Cabine limpa'];
+  $('items').innerHTML=itens.map(nome=>'<div class="item"><div class="item-name">'+nome+'</div><div class="choices"><button type="button" class="choice" disabled>✓ Conforme</button><button type="button" class="choice" disabled>✕ Não conforme</button></div></div>').join('');
+  $('progress').textContent='Gravação desabilitada';
+  const info=document.createElement('div');
+  info.className='status neutral';
+  info.textContent='Página de homologação. Registro e reinspeção permanecem bloqueados até validação e autorização da gravação no servidor.';
   $('checklist').querySelector('.panel').prepend(info);
+
+  function renderHistorico(payload) {
+    if(!payload || payload.sucesso!==true || payload.ambiente!=='V3_TESTES' || !Array.isArray(payload.registros)) {
+      throw new Error(payload && payload.mensagem ? String(payload.mensagem) : 'Resposta inesperada da API.');
+    }
+    const registros=payload.registros;
+    const conformes=registros.filter(r=>String(r.status||'').trim().toUpperCase()==='CONFORME').length;
+    const pendencias=registros.filter(r=>String(r.status||'').trim().toUpperCase()==='PENDÊNCIA').length;
+    $('mTotal').textContent=number(registros.length);
+    $('mConforme').textContent=number(conformes);
+    $('mPendencia').textContent=number(pendencias);
+    $('mApi').textContent='Conectada';
+    $('mApiDesc').textContent='Dados reais · V3 TESTES';
+    const recentes=registros.filter(r=>r && !Number.isNaN(Date.parse(r.dataHora)))
+      .sort((a,b)=>Date.parse(b.dataHora)-Date.parse(a.dataHora)).slice(0,12);
+    const tbody=$('historicoBody');
+    tbody.replaceChildren();
+    for(const r of recentes) {
+      const tr=document.createElement('tr');
+      const data=new Date(r.dataHora).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'});
+      for(const valor of [r.locomotiva||'—',data,r.status||'—']) {
+        const td=document.createElement('td');td.textContent=String(valor);tr.appendChild(td);
+      }
+      tbody.appendChild(tr);
+    }
+    $('historicoTabela').classList.toggle('hidden',recentes.length===0);
+    $('historicoMsg').classList.toggle('hidden',recentes.length>0);
+    $('historicoMsg').textContent=recentes.length ? '' : 'Nenhum checklist encontrado na V3 TESTES.';
+  }
+
+  function carregarHistorico() {
+    $('historicoMsg').textContent='Consultando histórico real da V3 TESTES…';
+    // JSONP é necessário para a consulta do Apps Script a partir do GitHub Pages.
+    // O nome atende ao padrão restrito do endpoint (v3Historico_<10-16 dígitos>_<1-6 dígitos>).
+    const callback='v3Historico_'+Date.now()+'_'+Math.floor(Math.random()*1000000);
+    const script=document.createElement('script');
+    let concluido=false;
+    let timeout;
+    function cleanup() {
+      clearTimeout(timeout);
+      script.remove();
+      try {delete window[callback];} catch (_) {window[callback]=undefined;}
+    }
+    function erro(mensagem) {
+      if(concluido)return;
+      concluido=true;cleanup();
+      $('mApi').textContent='Falha';
+      $('mApiDesc').textContent='Consulta indisponível';
+      $('historicoMsg').classList.remove('hidden');
+      $('historicoTabela').classList.add('hidden');
+      $('historicoMsg').textContent='Não foi possível carregar o histórico: '+mensagem;
+    }
+    window[callback]=function(payload) {
+      if(concluido)return;
+      concluido=true;cleanup();
+      try {renderHistorico(payload);} catch(ex) {
+        $('mApi').textContent='Falha';
+        $('mApiDesc').textContent='Resposta inválida';
+        $('historicoMsg').classList.remove('hidden');
+        $('historicoTabela').classList.add('hidden');
+        $('historicoMsg').textContent='Erro ao interpretar a consulta: '+ex.message;
+      }
+    };
+    script.onerror=()=>erro('falha de rede ou acesso à implantação.');
+    timeout=setTimeout(()=>erro('tempo limite de 30 segundos.'),30000);
+    script.src=API+'?acao=historicoPublicoV3&callback='+encodeURIComponent(callback);
+    document.head.appendChild(script);
+  }
+  carregarHistorico();
 })();
 </script>
 </body>
 </html>
-
