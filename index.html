@@ -38,7 +38,7 @@
       <div class="layout"><div class="panel"><h2>Últimos checklists</h2><p class="desc">Consulta da aba Checklist da planilha V3 TESTES.</p><div id="historicoMsg" class="empty">Histórico indisponível: integração com o Apps Script pendente.</div><div id="historicoTabela" class="table-wrap hidden"><table><thead><tr><th>Locomotiva</th><th>Data/hora</th><th>Status</th></tr></thead><tbody id="historicoBody"></tbody></table></div></div><div class="sidepanel"><div class="panel"><h2>Comece uma inspeção</h2><p class="desc">Avalie os itens do banheiro e registre uma inspeção real no ambiente piloto.</p><button class="primary" data-go="checklist">Preencher checklist</button></div><div class="info"><strong>🔒 Ambiente protegido</strong><br>A gravação será habilitada após a homologação da integração com o servidor.</div></div></div>
     </section>
     <section id="checklist" class="tabview"><div class="layout"><div class="panel"><h2>Novo checklist</h2><p class="desc">Piloto V3: registre somente inspeções físicas realmente realizadas. A gravação será disponibilizada após a homologação da integração.</p><div class="formgrid"><label class="field">Locomotiva (4 dígitos)<input id="loco" inputmode="numeric" maxlength="4" placeholder="Ex.: 1250" autocomplete="off"></label><label class="field">Colaborador<input id="colaborador" maxlength="100" placeholder="Nome completo" autocomplete="off"></label></div><div id="duplicidadeAviso" class="status neutral" role="status" aria-live="polite">Informe os 4 dígitos da locomotiva para consultar o intervalo de 8 horas.</div><div class="section-head"><strong>Itens da inspeção</strong><small id="progress">0 de 10 avaliados</small></div><div id="items"></div><label class="field" style="margin-top:18px">Observações (obrigatórias se houver pendência)<textarea id="observacao" rows="3" maxlength="1000" placeholder="Descreva qualquer anormalidade identificada"></textarea></label><label class="confirm-box"><input type="checkbox" id="vistoriaConfirmada"><span>Confirmo que realizei fisicamente esta inspeção e que os dados informados são verdadeiros. O registro piloto não autoriza circulação ou liberação operacional.</span></label><div class="actions"><button class="primary" id="preview">Salvar checklist</button><button class="secondary" id="reset">Limpar formulário</button></div><div id="previewResult" aria-live="polite"></div></div><div class="sidepanel"><div class="panel"><h2>Como preencher</h2><div class="steps"><div class="step"><div class="dot">1</div><div>Informe a locomotiva e o colaborador.</div></div><div class="step"><div class="dot">2</div><div>Avalie os dez itens após a ativação da integração.</div></div><div class="step"><div class="dot">3</div><div>Confirme a inspeção física e salve o registro piloto.</div></div></div></div><div class="info"><strong>Importante</strong><br>O salvamento exige autorização do servidor e grava apenas na planilha V3 TESTES. Não constitui liberação operacional.</div></div></div></section>
-    <section id="pendencias" class="tabview"><div class="panel"><h2>Consulta de pendências</h2><p class="desc">Consulta de anomalias após a integração com o servidor.</p><div class="formgrid"><label class="field">Locomotiva<input id="locoPend" maxlength="4" inputmode="numeric" placeholder="Ex.: 1250"></label><div class="field" style="align-self:end"><button class="primary" id="buscarPend">Consultar</button></div></div><div id="pendResult" style="margin-top:20px" class="empty">Informe a locomotiva para consultar.</div></div></section>
+    <section id="pendencias" class="tabview"><div class="panel"><h2>Consulta de pendências</h2><p class="desc">Consulte pendências abertas ou em análise registradas na V3 TESTES. Consulta somente leitura; não constitui liberação operacional.</p><div class="formgrid"><label class="field">Locomotiva<input id="locoPend" maxlength="4" inputmode="numeric" placeholder="Ex.: 1250"></label><div class="field" style="align-self:end"><button class="primary" id="buscarPend">Consultar</button></div></div><div id="pendResult" style="margin-top:20px" class="empty">Informe a locomotiva para consultar.</div></div></section>
     <section id="reinspecao" class="tabview"><div class="layout"><div class="panel"><h2>Reinspeção de pendências</h2><p class="desc">A consulta e o registro de reinspeções serão habilitados após a integração segura. A reinspeção será habilitada após a integração segura.</p><div class="formgrid"><label class="field">Locomotiva (4 dígitos)<input id="locoRe" maxlength="4" inputmode="numeric" placeholder="Ex.: 1250"></label><div class="field" style="align-self:end"><button class="primary" id="buscarRe">Consultar pendências</button></div></div><div id="reMsg" class="status neutral">Informe a locomotiva para consultar.</div><div id="reForm" class="hidden"><label class="field" style="margin-top:15px">Colaborador<input id="colaboradorRe" maxlength="100" placeholder="Nome completo"></label><div id="reItems"></div><label class="field" style="margin-top:15px">Observação da reinspeção<textarea id="observacaoRe" rows="3" maxlength="1000" placeholder="Descreva o resultado da verificação"></textarea></label><label class="confirm-box"><input type="checkbox" id="reConfirmada"><span>Confirmo que realizei fisicamente a reinspeção. O registro não autoriza circulação.</span></label><div class="actions"><button class="primary" id="previewRe">Registrar reinspeção</button></div><div id="reResult" aria-live="polite"></div></div></div><div class="sidepanel"><div class="info"><strong>🔒 Reinspeção em testes</strong><br>Nenhum item é regularizado ou gravado nesta publicação inicial. A ausência de pendências na V3 não comprova liberação operacional.</div></div></div></section>
     <section id="movimentacoes" class="tabview">
       <div class="panel">
@@ -117,8 +117,12 @@
   // A publicação GitHub Pages é somente leitura. Nenhuma gravação é habilitada.
   document.querySelectorAll('input,textarea,select').forEach(el=>el.disabled=true);
   document.querySelectorAll('button:not([data-tab]):not([data-go])').forEach(el=>el.disabled=true);
+  // Apenas a consulta de pendências é habilitada; gravações continuam bloqueadas.
+  $('locoPend').disabled=false;
+  $('buscarPend').disabled=false;
+  $('locoPend').setAttribute('autocomplete','off');
   const msg='Funcionalidade ainda não integrada à API V3 TESTES. Nenhuma gravação foi realizada.';
-  ['duplicidadeAviso','pendResult','reMsg','movResult','gerStatus'].forEach(id=>{
+  ['duplicidadeAviso','reMsg','movResult','gerStatus'].forEach(id=>{
     if($(id)) {$(id).textContent=msg;$(id).className='status neutral';}
   });
   const itens=['Banheiro limpo','Banheiro drenado','Descarga funcionando','Água disponível','Sabonete líquido','Papel higiênico','Papel-toalha','Iluminação','Porta funcionando','Cabine limpa'];
@@ -196,6 +200,91 @@
     script.src=API+'?acao=historicoPublicoV3&callback='+encodeURIComponent(callback);
     document.head.appendChild(script);
   }
+  // Consulta de pendências reais por locomotiva — JSONP somente leitura.
+  let consultaPendenciaSeq=0;
+  function consultarPendenciasPublicas() {
+    const loco=$('locoPend').value.trim();
+    const destino=$('pendResult');
+    if(!/^\d{4}$/.test(loco)) {
+      destino.className='status error';
+      destino.textContent='Informe exatamente 4 dígitos da locomotiva.';
+      return;
+    }
+    const sequencia=++consultaPendenciaSeq;
+    const callback='v3Pendencias_'+Date.now()+'_'+Math.floor(Math.random()*1000000);
+    const script=document.createElement('script');
+    let concluido=false;
+    let timeout;
+    $('buscarPend').disabled=true;
+    destino.className='status neutral';
+    destino.textContent='Consultando pendências da locomotiva '+loco+'…';
+    function cleanup() {
+      clearTimeout(timeout);
+      script.remove();
+      try {delete window[callback];} catch (_) {window[callback]=undefined;}
+      if(sequencia===consultaPendenciaSeq) $('buscarPend').disabled=false;
+    }
+    function falhar(mensagem) {
+      if(concluido)return;
+      concluido=true;
+      cleanup();
+      destino.className='status error';
+      destino.textContent='Não foi possível consultar: '+mensagem;
+    }
+    window[callback]=function(payload) {
+      if(concluido)return;
+      concluido=true;
+      cleanup();
+      if(!payload || payload.sucesso!==true || payload.ambiente!=='V3_TESTES' ||
+         payload.locomotiva!==loco || !Array.isArray(payload.pendencias)) {
+        destino.className='status error';
+        destino.textContent='Resposta inválida da API: '+String(payload && payload.mensagem || 'dados inesperados');
+        return;
+      }
+      const registros=payload.pendencias;
+      destino.replaceChildren();
+      destino.className='';
+      const resumo=document.createElement('div');
+      resumo.className='status '+(registros.length?'neutral':'ok');
+      resumo.textContent=registros.length
+        ? 'Locomotiva '+loco+' — '+registros.length+' pendência(s) aberta(s) ou em análise.'
+        : 'Nenhuma pendência aberta ou em análise encontrada para a locomotiva '+loco+'.';
+      destino.appendChild(resumo);
+      if(registros.length) {
+        const wrap=document.createElement('div');
+        wrap.className='table-wrap';
+        wrap.style.marginTop='14px';
+        const tabela=document.createElement('table');
+        const thead=document.createElement('thead');
+        const cab=document.createElement('tr');
+        ['Item','Status','Reinspeções'].forEach(t=>{
+          const th=document.createElement('th');th.textContent=t;cab.appendChild(th);
+        });
+        thead.appendChild(cab);tabela.appendChild(thead);
+        const tbody=document.createElement('tbody');
+        registros.forEach(p=>{
+          const tr=document.createElement('tr');
+          [p.item||'—',p.status||'—',String(Number(p.quantidadeReinspecoes)||0)].forEach(valor=>{
+            const td=document.createElement('td');td.textContent=valor;tr.appendChild(td);
+          });
+          tbody.appendChild(tr);
+        });
+        tabela.appendChild(tbody);wrap.appendChild(tabela);destino.appendChild(wrap);
+      }
+      const aviso=document.createElement('p');
+      aviso.className='footer';
+      aviso.textContent='Fonte: aba Anomalias da V3 TESTES. A ausência de registros não comprova regularização nem autoriza circulação.';
+      destino.appendChild(aviso);
+    };
+    script.onerror=()=>falhar('falha de rede ou acesso à implantação.');
+    timeout=setTimeout(()=>falhar('tempo limite de 30 segundos.'),30000);
+    script.src=API+'?acao=pendenciasPublicasV3&locomotiva='+encodeURIComponent(loco)+'&callback='+encodeURIComponent(callback);
+    document.head.appendChild(script);
+  }
+  $('buscarPend').addEventListener('click',consultarPendenciasPublicas);
+  $('locoPend').addEventListener('keydown',e=>{
+    if(e.key==='Enter') {e.preventDefault();consultarPendenciasPublicas();}
+  });
   carregarHistorico();
 })();
 </script>
